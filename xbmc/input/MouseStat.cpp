@@ -320,4 +320,3 @@ CMouseStat::CButtonState::BUTTON_ACTION CMouseStat::CButtonState::Update(unsigne
 
   return MB_NONE;
 }
-
