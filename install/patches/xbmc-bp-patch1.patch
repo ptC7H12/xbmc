@@ -1,8 +1,6 @@
 --- a/xbmc/input/linux/LinuxInputDevices.cpp	2013-05-03 08:57:41.000000000 +0300
 +++ b/xbmc/input/linux/LinuxInputDevices.cpp	2013-07-09 21:36:10.000000000 +0300
-@@ -272,10 +272,29 @@
- 	LI_CAPS_AXES = 4,
- } LinuxInputCapsType;
+@@ -274,6 +274,25 @@
  
  static char remoteStatus = 0xFF; // paired, battery OK
  
@@ -27,15 +25,11 @@
 +
  CLinuxInputDevice::CLinuxInputDevice(const std::string fileName, int index)
  {
- 	m_fd = -1;
- 	m_vt_fd = -1;
- 	m_hasLeds = false;
-@@ -294,10 +313,55 @@
- 	m_deviceCaps = 0;
- 	m_deviceMinKeyCode = 0;
- 	m_deviceMaxKeyCode = 0;
- 	m_deviceMaxAxis = 0;
- 	m_bUnplugged = false;
+   m_fd = -1;
+@@ -296,6 +315,50 @@
+   m_deviceMaxKeyCode = 0;
+   m_deviceMaxAxis = 0;
+   m_bUnplugged = false;
 +	
 +  /* [AI]: get calibration values from file */
 +  /* set neutral values in case the read fails */
@@ -80,18 +74,13 @@
 +      touch_mouse
 +  );
 +  /* [AI]: read calibration values from file */
-+
  
- 	Open();
+   Open();
  }
- 
- CLinuxInputDevice::~CLinuxInputDevice()
-@@ -452,10 +516,19 @@
- * Translates key and button events.
- */
+@@ -454,6 +517,15 @@
  bool CLinuxInputDevice::KeyEvent(const struct input_event& levt, XBMC_Event& devt)
  {
- 	int code = levt.code;
+   int code = levt.code;
 +  
 +  /* [AI]: only for touchscreens, when PRESS action occurs */
 +  if((levt.code == BTN_TOUCH || levt.code == BTN_TOOL_FINGER || levt.code == BTN_MOUSE)
@@ -102,18 +91,14 @@
 +    m_mouseY = g_graphicsContext.GetHeight() + 2;
 +  }
  
- 	/* map touchscreen and smartpad events to button mouse */
- 	if (code == BTN_TOUCH || code == BTN_TOOL_FINGER)
- 		code = BTN_MOUSE;
- 
-@@ -600,15 +673,33 @@
- bool CLinuxInputDevice::AbsEvent(const struct input_event& levt, XBMC_Event& devt)
- {
- 	switch (levt.code)
- 	{
- 	case ABS_X:
--		m_mouseX = levt.value;
-+		//m_mouseX = levt.value;
+   /* map touchscreen and smartpad events to button mouse */
+   if (code == BTN_TOUCH || code == BTN_TOOL_FINGER)
+@@ -602,11 +674,29 @@
+   switch (levt.code)
+   {
+   case ABS_X:
+-    m_mouseX = levt.value;
++	//m_mouseX = levt.value;
 +    if(levt.value != g_Mouse.GetRawX())
 +    {
 +      g_Mouse.SetRawX(levt.value);
@@ -123,11 +108,11 @@
 +      m_mouseY = (int)(((float)levt.value) * (calib_y_fact)) + calib_y_d;
 +    else
 +      m_mouseX = (int)(((float)levt.value) * (calib_x_fact)) + calib_x_d;
- 		break;
+     break;
  
- 	case ABS_Y:
--		m_mouseY = levt.value;
-+		//m_mouseY = levt.value;
+   case ABS_Y:
+-    m_mouseY = levt.value;
++	//m_mouseY = levt.value;
 +    if(levt.value != g_Mouse.GetRawY())
 +    {
 +      g_Mouse.SetRawY(levt.value);
@@ -137,8 +122,6 @@
 +      m_mouseX = (int)(((float)levt.value) * (calib_x_fact)) + calib_x_d;
 +    else
 +      m_mouseY = (int)(((float)levt.value) * (calib_y_fact)) + calib_y_d;
- 		break;
- 
- 	case ABS_MISC:
- 		remoteStatus = levt.value & 0xFF;
- 		break;
+     break;
+   
+   case ABS_MISC:

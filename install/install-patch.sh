@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Add touchscreen calibration files
 if [ -d /touch ]
 	then
 		echo "/touch ist schon vorhanden"
@@ -13,17 +14,21 @@ if [ -d /touch ]
 fi
 
 
-		chmod a+x patch.sh
 
-		echo "install-patch.sh"
-		pwd
-		echo
+#copy patch files and apply patches - then remove them
+INSTALLDIR=$(pwd)
+cd ..
+XBMCDIR=$(pwd)
 
-		cp patch.sh ../
-		cp patches/xbmc-bp-patch1.patch ../
-		cp patches/xbmc-bp-patch2.patch ../
-		cp patches/xbmc-bp-patch3.patch ../
-		cp patches/xbmc-bp-patch4.patch ../
-		cp patches/xbmc-bp-patch5.patch ../
-
+cd $INSTALLDIR/patches
+for file in *.patch
+	do	
+		cp $INSTALLDIR/patches/"$file" $XBMCDIR
+		echo "Apply patchfile"
+		cd $XBMCDIR
+		patch -p1 --ignore-whitespace < $file
+		echo "Remove patchfile!"
+		rm $XBMCDIR/"$file"
+		echo 
+done
 

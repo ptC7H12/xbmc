@@ -1,3 +1,11 @@
+#patchfiles
+xbmc/interfaces/legacy/ModuleXbmcgui.cpp
+xbmc/interfaces/legacy/ModuleXbmcgui.h
+xbmc/input/MouseStat.h
+xbmc/input/MouseStat.cpp
+xbmc/input/linux/LinuxInputDevices.cpp
+*~
+
 # global patterns
 testMain
 
