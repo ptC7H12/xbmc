@@ -1,5 +1,5 @@
---- C:/Users/Familie/Desktop/Original/Neues Textdokument.txt	Tue Jan 06 16:12:33 2015
-+++ C:/Users/Familie/Desktop/Original/MouseStat.cpp	Tue Jan 06 16:10:03 2015
+--- a/xbmc/input/MouseStat.cpp	
++++ b/xbmc/input/MouseStat.cpp
 @@ -18,14 +18,18 @@
   *
   */

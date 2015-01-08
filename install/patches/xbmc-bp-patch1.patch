@@ -1,5 +1,5 @@
---- C:/Users/Familie/Desktop/Original/gepatcht/LinuxInputDevices.cpp	Tue Jan 06 15:54:14 2015
-+++ C:/Users/Familie/Desktop/Original/LinuxInputDevices.cpp	Tue Jan 06 16:02:09 2015
+--- a/xbmc/input/linux/LinuxInputDevices.cpp	2013-05-03 08:57:41.000000000 +0300
++++ b/xbmc/input/linux/LinuxInputDevices.cpp	2013-07-09 21:36:10.000000000 +0300
 @@ -272,10 +272,29 @@
  	LI_CAPS_AXES = 4,
  } LinuxInputCapsType;
